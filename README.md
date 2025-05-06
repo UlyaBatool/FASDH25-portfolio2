@@ -1,4 +1,4 @@
-#MINI-PROJECT 2: PLACE NAME ANALYSIS OF GAZA CONFLICT
+# MINI-PROJECT 2: PLACE NAME ANALYSIS OF GAZA CONFLICT
 This project extracts place names from Gaza war news articles, analyzes their mention frequency after the date the war started, and visualizes the results on interactive maps. It uses two techniques,a regex-based approach with a gazetteer to improve recall by including alternate place names, and Named Entity Recognition (NER) with the Stanza library to identify place names. The maps, animated by month, compare regex and NER extractions to highlight the effectiveness of each method.
 
 ##Repository Structure 

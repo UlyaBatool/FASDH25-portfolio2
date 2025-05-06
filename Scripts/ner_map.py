@@ -1,46 +1,36 @@
-"""
-This is the starting script for today's class,
-in which we'll build our first maps in Python.
-"""
-
 import pandas as pd
 import plotly.express as px
 
-# Load data
-counts = pd.read_csv("../ner_counts.tsv", sep="\t")
-coords = pd.read_csv("../gazetteers/NER_gazetteer.tsv", sep="\t")
+# Loading the data files
+counts_df = pd.read_csv("../ner_counts.tsv", sep="\t")
+coords_df = pd.read_csv("../NER_gazetteer.tsv", sep="\t")
 
+# Merging the dataframes and placename
+merged_df = pd.merge(counts_df, coords_df, on="placename", how="inner")
 
-# Clean column names (remove any leading/trailing whitespace)
-counts.columns = counts.columns.str.strip()
-coords.columns = coords.columns.str.strip()
+# Clean the data by removing rows with missing coordinates or count
+clean_df = merged_df.dropna(subset=["latitude", "longitude", "count"]).copy()  # 🟢 copy added
 
-# Rename columns in coords to match counts and plotting requirements
-coords = coords.rename(columns={
-    "Name": "Place",
-    "Latitude": "latitude",
-    "Longitude": "longitude"
-})
+# Step 4: Convert columns to float safely
+clean_df["latitude"] = clean_df["latitude"].astype(float)
+clean_df["longitude"] = clean_df["longitude"].astype(float)
+clean_df["count"] = clean_df["count"].astype(float)  # this line prevents NaN in marker size
 
-# Merge data on 'placename'
-data = pd.merge(counts, coords, left_on="placename", right_on="Place")
-
-# Ensure 'count' is numeric and drop rows with missing values
-data["count"] = pd.to_numeric(data["count"], errors="coerce")
-data = data.dropna(subset=["count", "latitude", "longitude"])
-
-fig = px.scatter_map(
-    data,
+# Step 5: Create the map
+fig = px.scatter_geo(
+    clean_df,
     lat="latitude",
     lon="longitude",
-    hover_name="Place",
     size="count",
-    color="count",
-    title="NER-extracted Places",
-    zoom=2,
+    color="placename",
+    hover_name="placename",
+    projection="natural earth",
+    size_max=20,
+    title="NER Place Frequencies (Jan 2024)"
 )
 
-fig.show()
+# Step 6: Export the map as HTML and PNG
+fig.write_html("ner_map.html")
+fig.write_image("ner_map.png")
 
-# Save map to an HTML file
-fig.write_html("NER_map.html")
+print("Map files saved as 'ner_map.html' and 'ner_map.png'")
