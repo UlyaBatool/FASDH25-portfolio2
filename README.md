@@ -23,9 +23,10 @@ FASDH25-portfolio2/
 │ ├── regex_map.png # Regex static visualization
 │ ├── ner_map.html # NER interactive visualization
 │ └── ner_map.png # NER static visualization
-└── README.md # This documentation
+└── README.md # This file documents the procedure of our project
 
 ## components and tools
+
 The project had multiple components and tools that we used throughout the process. The data set contained a folder named articles which had raw txt files of news articles about Gaza from january 2024. These files had to be processed in bulk using python to extract text content for NLP. Then we had Colab notebook in which the main code is written and executed titled as: Gaza.. we also used python for scripting and data processing, stanza library for name entity recognition, regex to clean and normalize places and OS module to read files from article directory. 
 
 ## 2A. Use gazetteer and regex to extract places in Gaza from the corpus
@@ -49,7 +50,7 @@ All the place mention counts are flattened into a list of rows and saved as "reg
 In this part we used our class colab notebook to extract and count place names (GPEs) from "january 2024" articles using stanza NLP library. following are the steps of NER in google collab.
 
 ### Notebook Setup
-we renamed our class exercise filename to Gaza_NER2_Anisha_Ulya_Sehrish.ipynb and located it in the repository.
+we renamed our class exercise filename to Gaza_NER2_Ulya_Anisha_Sehrish.ipynb and located it in the repository.
 ### Loading the corpus
 we changed the data path so that the notebook reads all txt files from the project's articles folder instead of session_10.1.
 ### Filtering by date
@@ -63,8 +64,16 @@ we normalized names by striping possessive endings, removing punctuations, and l
 ### Exporting Results
 we wrote the final dictionary to ner_counts.tsv with two columns (placename, count). finally we downloaded the notebook as ipynb and commited it to the repository.
 
+## part 3: Create a gazetteer for the NER places
 
-## 4A. Map the regex-extracted placenames
+In this part we geocoded every place name from ner_counts.tsv assigning “NA” when no match was found—and compiled the results into NER_gazetteer.tsv with placename, latitude, and longitude columns. 
+
+### Geocoding
+In this part we used the GeoNames API to fetch coordinates for each place in our dataset by sending HTTP requests and parsing the JSON responses. next we found coordinates for the places. we got our result in NER-gazetteer.tsv with three columns of place, latitude and longitude. 
+### Editing outputs manually
+In our output we got other entities than placenames as well such as events, organization and person's names so we manually removed them from the folder and refined our output.
+
+## 4A: Map the regex-extracted placenames
 ### Load Required Libraries
 We import pandas for handling tabular data and plotly.express for creating interactive maps.
 ### Read Frequency Data and Gazetteer Coordinates
@@ -80,18 +89,31 @@ We use the "carto-darkmatter-nolabels" map style for contrast and the "YlOrRd" c
 ### Save Outputs in HTML and PNG Formats
 The interactive map is saved as "regex_map.html" for exploration in browsers, and a static image is saved as "regex_map.png" for presentations and documentation.
 
+## 4B: Mapping the NER-extracted placenames
+
+### Mapping
+We used Plotly Express to visualize how often different place names appeared in our dataset from January 2024. Using the frequencies stored in ner_counts.tsv and the corresponding coordinates from NER_gazetteer.tsv, we created an interactive map (ner_map.html) and a static image (ner_map.png) to display these locations and their occurrence visually.
+
 ## Regex and  Gazetteer Technique Advantages and Disadvantages 
+Following is a comparison of Regex+gazetteer and NER.
+
 ### Advantages 
+
 The Regex + Gazetteer technique offers several advantages in processing and extracting place names from text. One of its main benefits is efficiency and speed, as regex can quickly scan through large datasets and identify patterns. This makes it well-suited for handling large corpora of text. Additionally, this technique provides flexibility, as it can account for various alternate spellings, abbreviations, and even localized forms of place names, thus improving the recall of place names. Furthermore, the approach is customizable, allowing for the construction of regex patterns tailored to match specific place names. It is also scalable, as the regex and gazetteer can be easily extended with more place names or new data. Lastly, when combined with geospatial data, this technique enables interactive visualizations, allowing for the mapping of place name frequencies over time, providing valuable insights.
-### Disvantages 
+
+### Disadvantages
+ 
 Despite its advantages, the Regex + Gazetteer technique has certain limitations. One significant disadvantage is its low recall; places that are not included in the gazetteer or have unusual or inconsistent spellings may be missed. The technique also requires regular maintenance to ensure the gazetteer is up to date with new place names or changes in spelling conventions, which can be time-consuming. Moreover, if the regex patterns are too rigid, the technique may suffer from overfitting, missing out on place name variations or alternative representations. Additionally, the process of creating regex patterns to cover all potential variations can become complex and resource-intensive. Finally, this method is context-insensitive, meaning it cannot account for place names used in figurative or non-literal contexts, which could lead to inaccuracies in the results.
 
-## Advantage and disadvantages of NER
-Following are the advantage and disadvantages that we noticed using NER.
-### Advantages
-It captures place names which are not listed in the gazetteer. It also handles multi-word and context dependent mentions.
-### Disadvantages
-It may extract non-place entities like false positives and depends on the quality of the model.
+## Self critical Analysis 
+One of the main challenges we faced in this project was dealing with incomplete or inconsistent data from the GeoNames API—sometimes it didn’t return coordinates, or the places were ambiguous. This caused issues when we tried to merge and map the data, especially when column names didn’t match or when missing values led to errors in visualization. While we managed to clean and fix these problems manually, it highlighted the need for better error handling and data validation in our workflow. another issue that we faced was while using google colab, everytime we opened colab we had to install and run each code which took us a lot of time. sometimes it would take 25 minutes to load one code. If we had more time, we would focus on making the process more automated and reliable, with clearer logic and perhaps better tools to filter or verify geocoding results. Overall, the project worked, but there’s definitely room for making it more efficient and user-friendly.
+
+
+
+
+
+
+
 
 
 
