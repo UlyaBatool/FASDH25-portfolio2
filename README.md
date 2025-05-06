@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 
 #MINI-PROJECT 2: PLACE NAME ANALYSIS OF GAZA CONFLICT
 
+=======
+# MINI-PROJECT 2: PLACE NAME ANALYSIS OF GAZA CONFLICT
+>>>>>>> 484f0ff0468f9e11795fd9860127a24056451c3c
 This project extracts place names from Gaza war news articles, analyzes their mention frequency after the date the war started, and visualizes the results on interactive maps. It uses two techniques,a regex-based approach with a gazetteer to improve recall by including alternate place names, and Named Entity Recognition (NER) with the Stanza library to identify place names. The maps, animated by month, compare regex and NER extractions to highlight the effectiveness of each method.
 
 ##Repository Structure
@@ -172,17 +176,3 @@ Despite its advantages, the Regex + Gazetteer technique has certain limitations.
 ## Self critical Analysis 
 
 One of the main challenges we faced in this project was dealing with incomplete or inconsistent data from the GeoNames API—sometimes it didn’t return coordinates, or the places were ambiguous. This caused issues when we tried to merge and map the data, especially when column names didn’t match or when missing values led to errors in visualization. While we managed to clean and fix these problems manually, it highlighted the need for better error handling and data validation in our workflow. another issue that we faced was while using google colab, everytime we opened colab we had to install and run each code which took us a lot of time. sometimes it would take 25 minutes to load one code. If we had more time, we would focus on making the process more automated and reliable, with clearer logic and perhaps better tools to filter or verify geocoding results. Overall, the project worked, but there’s definitely room for making it more efficient and user-friendly.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
