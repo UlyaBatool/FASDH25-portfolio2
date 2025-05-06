@@ -7,8 +7,8 @@ import pandas as pd
 import plotly.express as px
 
 # Load data
-counts = pd.read_csv("ner_counts.tsv", sep="\t")
-coords = pd.read_csv("gazetteers/NER_gazetteer.tsv", sep="\t")
+counts = pd.read_csv("../ner_counts.tsv", sep="\t")
+coords = pd.read_csv("../gazetteers/NER_gazetteer.tsv", sep="\t")
 
 
 # Clean column names (remove any leading/trailing whitespace)
